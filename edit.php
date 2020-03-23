@@ -1,9 +1,8 @@
 <?php
 	session_start();
-	require_once 'include/dateManager.php';
-	require_once 'include/config.php';
+	require_once 'include/facade.php';
 	require_once 'include/constants.php';
-	$configManager = new ConfigManager('doodle.json');
+	$doodle_facade = new DoodleFacade('doodle.json');
 ?>
 
 <!DOCTYPE html>
@@ -24,13 +23,14 @@
 		</script>
 <?php
 		} else {
+			echo "<h1>Hello ".$_SESSION[LOGGED_USER]."</h1>";
 			// If logged then load and display the results
 			if (isset($_POST['dates']) && !empty(array_filter($_POST['dates']))) {
-				$dateManager = new DateManager($_POST['dates'], $_POST['from'], $_POST['to'], $configManager);
-				$dateManager->storeNewDates();
+				$doodle_facade->addEntries($_POST['dates'], $_POST['from'], $_POST['to']);
 			}
 
-			if (!empty($userEntries = $configManager->getData()[$_SESSION[LOGGED_USER]])) {
+			echo "<h3>Your availability:</h3>";
+			if (!empty($userEntries = $doodle_facade->getData()[$_SESSION[LOGGED_USER]])) {
 				echo "<table><tr><td>Date</td><td>From</td><td>To</td></tr>";
 				foreach($userEntries as $key => $item) {
 		      		echo "<tr>";
@@ -40,9 +40,14 @@
 		      		echo "</tr>";
 			    }
 				echo "</table>";
+			} else {
+				echo 'No results';
 			}
+
+			$doodle_facade->solve();
 	?>
 	
+	<h3>Insert new time availability:</h3>
 	<form action="" method="POST">
 	<div id="field-container">
 

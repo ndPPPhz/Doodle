@@ -1,11 +1,8 @@
 <?php
 session_start();
 require_once 'include/constants.php';
-require_once 'include/config.php';
-require_once 'include/login.php';
-
-$configManager = new ConfigManager('doodle.json');
-$logger = new Logger($configManager->config);
+require_once 'include/facade.php';
+$doodle_facade = new DoodleFacade('doodle.json');
 ?>
 
 <html>
@@ -20,7 +17,7 @@ $logger = new Logger($configManager->config);
 		$insertedUsername = $_POST[USERNAME];
 		$insertedPassword = $_POST[PASSWORD];
 		if (isset($insertedUsername) && isset($insertedPassword)) {
-			$logger->log($insertedUsername, $insertedPassword);
+			$doodle_facade->log($insertedUsername, $insertedPassword);
 		}
 	}
 	if (isset($_SESSION[LOGGED_USER])) {

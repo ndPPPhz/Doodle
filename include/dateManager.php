@@ -3,7 +3,6 @@
 	 * 
 	 */
 	class DateRange implements JsonSerializable {
-		
 		public function __construct($date, $from, $to) {
 			$this->date = $date;
 			$this->from = $from;
@@ -21,8 +20,8 @@
 		}
 
 		public function asDateTime() {
-			$fromDateTime = new DatePeriod($this->date." ".$this->from);
-			$toDateTime = new DatePeriod($this->date." ".$this->to);
+			$fromDateTime = new DateTime($this->date." ".$this->from);
+			$toDateTime = new DateTime($this->date." ".$this->to);
 			return ['from' => $fromDateTime, 'to' => $toDateTime];
 		}
 	}

@@ -1,50 +1,49 @@
 <?php
-
 /**
- * The Config manager
+ * The object which manages the config file
  */
 class ConfigManager {
-	private $config_file;
 	public $config;
+	private $config_file;
 
 	private $users = [
-		'annino' => 'test0',
-		'gigi' => 'test1'
+		'user0' => 'test0',
+		'user1' => 'test1'
 	];
 
-	function __construct($config_file) {
+	function __construct(string $config_file) {
 		$this->config_file = $config_file;
 
 		// If the file extists, decode it and assign it to $config
 		if (file_exists($this->config_file)) {
 			$this->config = json_decode(file_get_contents($this->config_file), true);
 		} else {
-		// Otherwise generate a new one from scratch
+			// Otherwise generate a new one from scratch
 			$this->config = [
-				'users' => $this->users,
-				'data' => []
+				USERKEY => $this->users,
+				DATAKEY => []
 			];
 			$this->serialize_config($this->config);
 		}
 	}
 
-	private function serialize_config($config) {
+	private function serialize_config(array $config) {
 		file_put_contents($this->config_file, json_encode($config, JSON_PRETTY_PRINT));
 	}
 
 	// Add a new entry to the config file
-	public function add($date, $user) {
-		$this->config['data'][$user] = array_merge($this->config['data'][$user] ?? [], $date);
+	function add(array $date, string $user) {
+		$this->config[DATAKEY][$user] = array_merge($this->config[DATAKEY][$user] ?? [], $date);
 	}
 
-	// Save the last config state into the config file
-	public function save() {
+	// Save the last state of the config into the config file
+	function save() {
 		$this->serialize_config($this->config);
 	}
 
-	public function getData() {
-		return $this->config['data'];
+	// Get all the users' time preferences
+	function getUsersEntries(): array {
+		return $this->config[DATAKEY];
 	}
 }
-
 ?>

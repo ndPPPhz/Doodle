@@ -14,22 +14,30 @@ $doodle_facade = new DoodleFacade('doodle.json');
 
 <?php
 	if (!isset($_SESSION[LOGGED_USER])) {
-		$insertedUsername = $_POST[USERNAME];
-		$insertedPassword = $_POST[PASSWORD];
-		if (isset($insertedUsername) && isset($insertedPassword)) {
-			$doodle_facade->log($insertedUsername, $insertedPassword);
+		$username = $_POST[USERNAME];
+		$password = $_POST[PASSWORD];
+		// Check if the user has inserted username and password
+		if (isset($username) && isset($password)) {
+			// Log using the inserted username and password
+			if ($doodle_facade->log($username, $password)) {
+				$_SESSION[LOGGED_USER] = $username;
+			}
 		}
 	}
+
+	// If the login went through show the edit area
 	if (isset($_SESSION[LOGGED_USER])) {
 		echo '<script>document.location.href = "./edit.php"</script>';
 		exit;
 	} else {
+	// Otherwise show again the login 
 ?>
-	<form action="" method="POST">
-	<label>User: </label> <input type="text" name=<?=USERNAME?>></br>
-	<label>Password: </label><input type="text" name=<?=PASSWORD?>></br>
-	<input type="submit" value="Login">
-	</form>
+
+<form action="" method="POST">
+<label>User: </label> <input type="text" name=<?=USERNAME?>></br>
+<label>Password: </label><input type="text" name=<?=PASSWORD?>></br>
+<input type="submit" value="Login">
+</form>
 
 <?php } ?>
 

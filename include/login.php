@@ -1,25 +1,23 @@
 <?php
-	/**
-	 * 
-	 */
-	class Logger {
-		
-		private $config;
+/**
+ * The class in charge of committing the login
+ */
+class Logger {
+	private $config;
 
-		function __construct($config) {
-			$this->config = $config;
-		}
+	function __construct($config) {
+		$this->config = $config;
+	}
+	
+	function log($username, $password): bool {
+		$isUsernameSet = isset($this->config[USERSKEY][$username]);
+		$doesPasswordMatch = $this->config[USERSKEY][$username] == $password;
 		
-		public function log($username, $password): bool {
-			$isUsernameSet = isset($this->config['users'][$username]);
-			$doesPasswordMatch = $this->config['users'][$username] == $password;
-
-			if ($isUsernameSet && $doesPasswordMatch) {
-				$_SESSION['currentUser'] = $username;
-				return true;
-			} else {
-				return false;
-			}
+		if ($isUsernameSet && $doesPasswordMatch) {
+			return true;
+		} else {
+			return false;
 		}
 	}
+}
 ?>

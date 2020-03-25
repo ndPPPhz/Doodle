@@ -1,8 +1,8 @@
 <?php
-	session_start();
-	require_once 'include/facade.php';
-	require_once 'include/constants.php';
-	$doodle_facade = new DoodleFacade('doodle.json');
+session_start();
+require_once 'include/facade.php';
+require_once 'include/constants.php';
+$doodle_facade = new DoodleFacade('doodle.json');
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
 			}
 
 			echo "<h3>Your availability:</h3>";
-			if (!empty($userEntries = $doodle_facade->getData()[$_SESSION[LOGGED_USER]])) {
+			if (!empty($userEntries = $doodle_facade->getUsersEntries()[$_SESSION[LOGGED_USER]])) {
 				echo "<table><tr><td>Date</td><td>From</td><td>To</td></tr>";
 				foreach($userEntries as $key => $item) {
 		      		echo "<tr>";
@@ -44,7 +44,18 @@
 				echo 'No results';
 			}
 
-			$doodle_facade->solve();
+			$commonRange = $doodle_facade->solve();
+
+			if (!empty($commonRange)) {
+				echo "<h3>Common slot time</h3>";
+				echo "<table>";
+				foreach ($commonRange as $dataRange) {
+					$from = $dataRange['from']->format('d-m-Y H:i');
+					$to = $dataRange['to']->format('d-m-Y H:i');
+					echo "<tr><td>$from</td><td>$to</td></tr>";
+				}
+				echo "</table>";
+			}
 	?>
 	
 	<h3>Insert new time availability:</h3>

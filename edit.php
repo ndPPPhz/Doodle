@@ -105,6 +105,7 @@ $doodle_facade = new DoodleFacade('doodle.json');
 		}
 		if ($_GET['logout']) {
 			unset($_SESSION['currentUser']);
+			session_destroy();
 			echo '<script>document.location = document.location.toString().replace(/\?.+$/, "");</script>';
 			exit;
 		}

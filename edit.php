@@ -20,21 +20,19 @@ $doodle_facade = new DoodleFacade('doodle.json');
 </head>
 
 <body class="text-center">
+<div class="container">
 <?php
 	if (!isset($_SESSION['currentUser'])) {
 ?>
-<label>You are not logged in</label></br>
-<input type="submit" value="Back to login" onclick="backToLogin()">
+<h1>You are not logged in</h1>
+<input type="submit" class="btn btn-danger" value="Back to login" onclick="backToLogin()">
 <script type="text/javascript"> 
 function backToLogin() {
 	document.location.href = '.'
 }
 </script>
 
-<?php } else { ?>
-
-<div class="container">
-<?php
+<?php } else {
 	echo "<h1>Hello ".$_SESSION[LOGGED_USER]."</h1>";
 	// If logged then load and display the results
 	if (isset($_POST['dates']) && !empty(array_filter($_POST['dates']))) {
@@ -53,7 +51,7 @@ function backToLogin() {
 	    }
 		echo "</table>";
 	} else {
-		echo 'No results';
+		echo '<h6> You have not added any time slot yet</h3>';
 	}
 
 	$commonRange = $doodle_facade->solve();
@@ -71,7 +69,7 @@ function backToLogin() {
 ?>
 
 <h3>Insert new time availability:</h3>
-
+<form action="" method="POST">
 <div id="field-extra">
 <div class="row">
 	<div class="col">
@@ -136,7 +134,6 @@ function backToLogin() {
 </script>
 
 	<div class="col">
-		<form action="" method="POST">
 			<input class="btn btn-success btn-block" type="submit">
 		</form>
 	</div>

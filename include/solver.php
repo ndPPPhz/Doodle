@@ -31,8 +31,8 @@ class Solver {
 			foreach ($userRanges as $userRange) {
 				if (Solver::areOverlapping($range, $userRange)) {
 
-					$max = max(strtotime($range['from']->format('d-m-Y H:i')), strtotime($userRange['from']->format('d-m-Y H:i')));
-					$min = min(strtotime($range['to']->format('d-m-Y H:i')), strtotime($userRange['to']->format('d-m-Y H:i')));
+					$max = max(strtotime($range['from']->format(DATE_FORMAT)), strtotime($userRange['from']->format(DATE_FORMAT)));
+					$min = min(strtotime($range['to']->format(DATE_FORMAT)), strtotime($userRange['to']->format(DATE_FORMAT)));
 
 					$fromDate = new DateTime();
 					$fromDate->setTimestamp($max);
@@ -49,15 +49,11 @@ class Solver {
 	}
 
 	private static function areOverlapping(array $dateRange1, array $dateRange2): bool {
-		$timestamp_datarange1_from = $dateRange1['from']->format('d-m-Y H:i');
-		$timestamp_datarange1_to = $dateRange1['to']->format('d-m-Y H:i');
+		$timestamp_datarange1_from = $dateRange1['from']->format(DATE_FORMAT);
+		$timestamp_datarange1_to = $dateRange1['to']->format(DATE_FORMAT);
 
-		$timestamp_datarange2_from = $dateRange2['from']->format('d-m-Y H:i');
-		$timestamp_datarange2_to = $dateRange2['to']->format('d-m-Y H:i');
-
-		// var_dump($timestamp_datarange1_from, $timestamp_datarange1_to);
-		// echo "<br/>";
-		// var_dump($timestamp_datarange2_from, $timestamp_datarange2_to);
+		$timestamp_datarange2_from = $dateRange2['from']->format(DATE_FORMAT);
+		$timestamp_datarange2_to = $dateRange2['to']->format(DATE_FORMAT);
 
 		if (strtotime($timestamp_datarange1_from) >= strtotime($timestamp_datarange2_to)) {
 			return false;

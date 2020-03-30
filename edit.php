@@ -60,8 +60,8 @@ function backToLogin() {
 		echo "<h3>Common slot time</h3>";
 		echo "<table class='table'>";
 		foreach ($commonRange as $dataRange) {
-			$from = $dataRange['from']->format('d-m-Y H:i');
-			$to = $dataRange['to']->format('d-m-Y H:i');
+			$from = $dataRange['from']->format(DATE_FORMAT);
+			$to = $dataRange['to']->format(DATE_FORMAT);
 			echo "<tr><td>$from</td><td>$to</td></tr>";
 		}
 		echo "</table>";
